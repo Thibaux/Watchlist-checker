@@ -5,13 +5,11 @@ A websraper that retrieves the films (of interest) that Eye is showing at the mo
 
 ## TODO
 
-- If films match send mail
-
 - Mail styling
 	- Link to Letterboxd
 	- Link to Eye
 
 - Add cinema's
 
-- Letterboxd webscrapen(differant file)
+- Letterboxd webscrapen(other file)
 
