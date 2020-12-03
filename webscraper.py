@@ -15,9 +15,11 @@ found_films = []
 
 # Function to retrieve all the films that the cinema Eye is playing at the moment
 def EyeAllfilms():
+	global bioscopen
+	eye = "Eye Filmmuseum"
 
 	# Append this cinema to the list of cinema's
-	bioscopen.append("Eye") 
+	bioscopen.append(eye)
 
 	# Get the Eye classics that are on display now
 	def EyeClassics():
@@ -134,9 +136,6 @@ def check():
 	global found_films
 	global bioscopen
 
-	# Add a comma to every cinema entry
-	bioscopen = ", ".join(bioscopen)
-
 	# Check if there are films playing that are in my watchlist aswell
 	check = any(item in all_films for item in titles)
 
@@ -151,8 +150,9 @@ def check():
 				break
 		print(f"""
 
-	Jaa! Er draaien films van je watchlist bij {bioscopen}.
+	Jaa! Er draaien films van je watchlist bij {bioscopen[0]}.
 			""")
+
 		SendMail()
 		exit()
 
@@ -163,10 +163,16 @@ def check():
 	Sorry man, er draaien geen films van je watchlist bij {bioscopen}.
 			""")
 			break
-
+	
 
 def SendMail():
+	global bioscopen
 	global found_films
+
+	for i in range(len(found_films)):
+		found_films[i] = found_films[i][0].upper() + found_films[i][1:]
+
+	found_films = (', \n'.join(found_films))
 
 	# Setup mailing server
 	server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -177,10 +183,13 @@ def SendMail():
 	# Login to my mail with hidden credentials
 	server.login(secrets.sender, secrets.password)
 
+
 	# Add content to the mail
-	subject = f"Dit zijn de films die nu draaien bij Eye"
+	subject = f"Er draaien films uit je watchlist bij bioscopen!"
 	body = f"""
-	{found_films}
+Deze films draaien bij {bioscopen[0]}
+
+{found_films}
 	"""
 	msg = f"Subject: {subject}\n\n{body}"
 
